@@ -88,7 +88,6 @@
 			children = (
 				35C77E2D2B578CD600591FA7 /* PDFKit */,
 				3528255E2B54D783002F17F5 /* adel.pdf */,
-				352825562B54D783002F17F5 /* Resizable */,
 				352825422B54D759002F17F5 /* AppDelegate.swift */,
 				352825442B54D759002F17F5 /* SceneDelegate.swift */,
 				352825462B54D759002F17F5 /* ViewController.swift */,
@@ -113,16 +112,25 @@
 			path = Resizable;
 			sourceTree = "<group>";
 		};
-		35C77E2D2B578CD600591FA7 /* PDFKit */ = {
+		352E1D122B59469B000133A7 /* PDF */ = {
 			isa = PBXGroup;
 			children = (
-				35C77E382B57ED1E00591FA7 /* Annotation */,
 				35C77E2E2B578CDE00591FA7 /* PDFDocumentView.swift */,
 				35C77E342B57A45200591FA7 /* PDFKitDocument.swift */,
 				35C77E302B57A3B900591FA7 /* PDFDocumentPage.swift */,
 				35C77E322B57A42100591FA7 /* PDFKitToolPicker.swift */,
 				35C77E362B57A4E800591FA7 /* PDFDocumentOverlay.swift */,
 				3528255B2B54D783002F17F5 /* PDFKitDrawingView.swift */,
+			);
+			path = PDF;
+			sourceTree = "<group>";
+		};
+		35C77E2D2B578CD600591FA7 /* PDFKit */ = {
+			isa = PBXGroup;
+			children = (
+				352E1D122B59469B000133A7 /* PDF */,
+				352825562B54D783002F17F5 /* Resizable */,
+				35C77E382B57ED1E00591FA7 /* Annotation */,
 			);
 			path = PDFKit;
 			sourceTree = "<group>";

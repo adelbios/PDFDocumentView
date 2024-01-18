@@ -43,32 +43,9 @@ class PDFDocumentView: PDFView {
         self.startDrawing(isEnable: isEnable)
     }
     
-    func save() {
-        guard let document = self.pdfDocument else { return }
-        
-        let documentsURL = try! FileManager.default.url(
-            for: .documentDirectory, in: .userDomainMask,
-            appropriateFor: nil, create: false
-        )
-        
-        let savedURL = documentsURL.appendingPathComponent("yourCustomName.pdf")
-        
-        document.close {
-            switch $0 {
-            case true:
-                document.save(to: savedURL, for: .forOverwriting) { saved in
-                    print(" 2.4 - Saved at \(savedURL)")
-                }
-            case false:
-                print("Sorry, error !")
-            }
-        }
-        
-    }
-    
     func saveTo(url: URL, fileName: String) {
         guard let document = self.pdfDocument else { return }
-        var file = url.appendingPathComponent(fileName)
+        let file = url.appendingPathComponent(fileName)
         document.close {
             switch $0 {
             case true:

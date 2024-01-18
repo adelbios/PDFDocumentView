@@ -19,13 +19,6 @@ class PDFKitDrawingView: UIView {
     
     var pdf: PDFView?
     
-    private var holderView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .clear
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-        
     lazy var resizable: ResizableView = {
         let v = ResizableView(frame: .init(x: 30, y: 30, width: 150, height: 130))
         v.backgroundColor = .clear
@@ -75,34 +68,32 @@ class PDFKitDrawingView: UIView {
 private extension PDFKitDrawingView {
     
     func setupViews() {
-        addSubview(holderView)
-        addSubview(canvasView)
         addSubview(resizable)
+        addSubview(canvasView)
         NSLayoutConstraint.activate([
             canvasView.topAnchor.constraint(equalTo: topAnchor),
             canvasView.trailingAnchor.constraint(equalTo: trailingAnchor),
             canvasView.bottomAnchor.constraint(equalTo: bottomAnchor),
             canvasView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            
-            holderView.topAnchor.constraint(equalTo: topAnchor),
-            holderView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            holderView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            holderView.leadingAnchor.constraint(equalTo: leadingAnchor),
         ])
     }
 
 }
 
+//MARK: - ResizableViewDelegate
 extension PDFKitDrawingView: ResizableViewDelegate {
     
     func delete() {
         self.enable(mode: .defualt)
         self.resizable.set(image: nil, pdf: self.pdf ?? PDFView())
         self.resizable.hide(withImage: true)
+        guard let page = (self.pdf?.currentPage as? PDFDocumentPage) else { return }
+        let id = page.pageRef?.pageNumber ?? 0
+        guard let currentAnnotation = page.annotations.first(where: { $0.stampName == "\(id)" }) else { return }
+        page.removeAnnotation(currentAnnotation)
     }
     
     func didEndChanging(rect: CGRect?, rotate: RotateValue) {
     }
-    
     
 }

@@ -35,7 +35,12 @@ class ViewController: UIViewController {
     
     
     @IBAction func SaveButtonClicked(_ sender: Any) {
-        pdfView.save()
+        let documentsURL = try! FileManager.default.url(
+            for: .documentDirectory, in: .userDomainMask,
+            appropriateFor: nil, create: false
+        )
+        
+        pdfView.saveTo(url: documentsURL, fileName: "ADEL.pdf")
     }
     
     @IBAction func AddImageSig1(_ sender: Any) {

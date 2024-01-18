@@ -30,7 +30,6 @@ class PDFKitDocument: UIDocument {
     
     override func contents(forType typeName: String) throws -> Any {
         guard let pdfDocument = pdfDocument else { return Data() }
-        // Go through all pages in the document
         for i in 0...pdfDocument.pageCount-1 {
             guard let page = pdfDocument.page(at: i) else { return Data() }
             addDrawingAnnottion(page)
