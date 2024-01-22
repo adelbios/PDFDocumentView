@@ -18,12 +18,23 @@ class PDFKitDrawingView: UIView {
     }
     
     var pdf: PDFView?
+    var page: PDFDocumentPage?
     
     lazy var resizable: ResizableView = {
-        let v = ResizableView(frame: .init(x: 30, y: 30, width: 150, height: 130))
+        let v = ResizableView(frame: .init(x: 50, y: 150, width: 150, height: 130))
         v.backgroundColor = .clear
         v.delegate = self
         return v
+    }()
+    
+    private lazy var addSignatureButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(.init(systemName: "signature"), for: .normal)
+        button.setTitle("إضافة توقيع", for: .normal)
+        button.addTarget(self, action: #selector(didAddSignatureButtonClicked), for: .touchUpInside)
+        button.alpha = 0.7
+        return button
     }()
     
     var canvasView: PKCanvasView = {
@@ -39,6 +50,11 @@ class PDFKitDrawingView: UIView {
         super.init(frame: frame)
         setupViews()
         self.resizable.hide(withImage: true)
+        var config = UIButton.Configuration.filled()
+        config.titlePadding = 0
+        config.imagePlacement = .top
+        config.imagePadding = 0
+        addSignatureButton.configuration = config
     }
     
     required init?(coder: NSCoder) {
@@ -46,11 +62,11 @@ class PDFKitDrawingView: UIView {
     }
     
     func enable(mode: ModeType, image: ImageResource? = nil) {
-        guard let pdf = self.pdf else { return }
+        //        guard let pdf = self.pdf else { return }
         switch mode {
         case .signature:
-            self.resizable.set(image: image, pdf: pdf)
             self.resizable.show()
+            self.addSignatureButton.alpha = 0
             self.canvasView.isUserInteractionEnabled = false
         case .drawing:
             self.resizable.hide(withImage: false)
@@ -59,7 +75,25 @@ class PDFKitDrawingView: UIView {
             //image == nil ? self.resizable.hide(withImage: true) : self.resizable.show()
             self.resizable.show()
             self.canvasView.isUserInteractionEnabled = false
+            self.addSignatureButton.alpha = 1
         }
+    }
+    
+    @objc private func didAddSignatureButtonClicked() {
+        guard let page = self.page else { return }
+//        print(page.pageRef?.pageNumber)
+//        guard let pdfPage = currentPage as? PDFDocumentPage else { return }
+//        if pdfPage.resizableContainerView == nil {
+//            pdfPage.resizableContainerView?.page = pdfPage
+//            pdfPage.resizableContainerView = overlay.pageToViewMapping[pdfPage]
+//        }
+//        guard let resView = pdfPage.resizableContainerView else { return }
+        let img = ImageResource.sign1
+        self.enable(mode: .signature, image: img)
+        let pageRect = page.bounds(for: .mediaBox).maxY
+        print(pageRect)
+        self.resizable.set(image: img, pdf: pdf ?? PDFDocumentView(), yOffset: pageRect)
+        
     }
     
 }
@@ -68,16 +102,21 @@ class PDFKitDrawingView: UIView {
 private extension PDFKitDrawingView {
     
     func setupViews() {
-        addSubview(resizable)
         addSubview(canvasView)
+        addSubview(resizable)
+        addSubview(addSignatureButton)
         NSLayoutConstraint.activate([
             canvasView.topAnchor.constraint(equalTo: topAnchor),
             canvasView.trailingAnchor.constraint(equalTo: trailingAnchor),
             canvasView.bottomAnchor.constraint(equalTo: bottomAnchor),
             canvasView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            // addSignatureButton
+            addSignatureButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            addSignatureButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            addSignatureButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
-
+    
 }
 
 //MARK: - ResizableViewDelegate

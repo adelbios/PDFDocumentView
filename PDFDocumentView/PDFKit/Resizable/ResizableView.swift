@@ -85,8 +85,10 @@ class ResizableView: UIView {
         annotationRotateValue = .init(angle: 0, radian: 0)
     }
     
-    func set(image: ImageResource?, pdf: PDFView) {
-        let signViewFrame = CGRect(x: 30, y: 30, width: 150, height: 130)
+    func set(image: ImageResource?, pdf: PDFView, yOffset: CGFloat = 30) {
+        let height: CGFloat = 130
+        let y = yOffset == 0 ? 30 : yOffset - height - 30
+        let signViewFrame = CGRect(x: 30, y: y, width: 150, height: height)
         self.frame = signViewFrame
         self.updateDragHandles()
         self.annotationRect = signViewFrame

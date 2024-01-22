@@ -64,13 +64,17 @@
         <!--Navigation Controller-->
         <scene sceneID="kcV-Wu-E9u">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cQG-vz-YYa" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="cQG-vz-YYa" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="AmK-Io-60L">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bQH-v5-l8v">
+                        <rect key="frame" x="0.0" y="769" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="dvo-rQ-zHX"/>
                     </connections>

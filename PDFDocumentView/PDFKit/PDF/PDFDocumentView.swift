@@ -14,7 +14,7 @@ class PDFDocumentView: PDFView {
     private(set) var currentPageIndex: Int = 0
     private var pdfDocument: PDFKitDocument?
     private var overlay = PDFDocumentOverlay()
-    private var scroll: UIScrollView!
+//    private var scroll: UIScrollView!
     
     //MARK: - .Init
     required init?(coder: NSCoder) {
@@ -66,20 +66,20 @@ private extension PDFDocumentView {
         autoScales = true
         displayMode = .singlePageContinuous
         pageShadowsEnabled = false
-        displaysPageBreaks = false
+        displaysPageBreaks = true
         isInMarkupMode = true
-        displayBox = .cropBox
+        displayBox = .mediaBox
         interpolationQuality = .high
-        usePageViewController(true)
+        usePageViewController(false)
     }
     
     func configureDocumentLoading(success: Bool) {
         guard success == true else { return }
         self.pdfDocument?.pdfDocument?.delegate = self
         self.pageOverlayViewProvider = self.overlay
-        self.scroll = self.scrollView()
-        scroll.delegate = self
-        scroll.showsVerticalScrollIndicator = false
+//        self.scroll = self.scrollView()
+//        scroll.delegate = self
+//        scroll.showsVerticalScrollIndicator = false
         self.document = self.pdfDocument?.pdfDocument
         self.minScaleFactor = self.scaleFactorForSizeToFit
         self.maxScaleFactor = 4.0
@@ -100,18 +100,18 @@ private extension PDFDocumentView {
 private extension PDFDocumentView {
     
     func addSignature(image: ImageResource) {
-        scroll.isScrollEnabled = true
-        guard let pdfPage = currentPage as? PDFDocumentPage else { return }
-        if pdfPage.resizableContainerView == nil {
-            pdfPage.resizableContainerView = overlay.pageToViewMapping[pdfPage]
-        }
-        
-        guard let resView = pdfPage.resizableContainerView else { return }
-        resView.enable(mode: .signature, image: image)
+//        scroll.isScrollEnabled = true
+//        guard let pdfPage = currentPage as? PDFDocumentPage else { return }
+//        if pdfPage.resizableContainerView == nil {
+//            pdfPage.resizableContainerView?.page = pdfPage
+//            pdfPage.resizableContainerView = overlay.pageToViewMapping[pdfPage]
+//        }
+//        guard let resView = pdfPage.resizableContainerView else { return }
+//        resView.enable(mode: .signature, image: image)
     }
     
     func startDrawing(isEnable: Bool) {
-        scroll.isScrollEnabled = !isEnable
+//        scroll.isScrollEnabled = !isEnable
         guard let pdfPage = currentPage as? PDFDocumentPage else { return }
         if pdfPage.resizableContainerView == nil {
             pdfPage.resizableContainerView = overlay.pageToViewMapping[pdfPage]

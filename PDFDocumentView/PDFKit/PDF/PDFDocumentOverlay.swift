@@ -17,30 +17,31 @@ class PDFDocumentOverlay: NSObject, PDFPageOverlayViewProvider {
         guard let page = page as? PDFDocumentPage else { return nil }
         
         if let overlayView = self.pageToViewMapping[page] {
-            resultView?.pdf = view
+            overlayView.page = page
             resultView = overlayView
         } else {
             let canvasView = PDFKitDrawingView(frame: .zero)
             canvasView.backgroundColor = UIColor.clear
+            canvasView.page = page
             self.pageToViewMapping[page] = canvasView
             resultView = canvasView
-            resultView?.pdf = view
         }
         
       
         if let container = page.resizableContainerView {
             resultView?.resizable = container.resizable
-            resultView?.pdf = view
+            resultView?.canvasView.drawing = container.canvasView.drawing
+            resultView?.page = page
             page.resizableContainerView = resultView
         }
         
-        if let drawing = page.resizableContainerView?.canvasView.drawing {
-            resultView?.canvasView.drawing = drawing
-            resultView?.pdf = view
-            page.resizableContainerView = resultView
-        }
+//        if let drawing = page.resizableContainerView?.canvasView.drawing {
+//            resultView?.canvasView.drawing = drawing
+//            resultView?.pdf = view
+//            page.resizableContainerView = resultView
+//        }
         
-        resultView?.pdf = view
+//        resultView?.pdf = view
         
         return resultView
         
@@ -50,6 +51,10 @@ class PDFDocumentOverlay: NSObject, PDFPageOverlayViewProvider {
     }
     
     func pdfView(_ pdfView: PDFView, willEndDisplayingOverlayView overlayView: UIView, for page: PDFPage) {
+//        let overlayView = overlayView as! PDFKitDrawingView
+//        let page = page as! PDFDocumentPage
+//        page.resizableContainerView?.resizable.imageview = overlayView.resizable.imageview
+//        pageToViewMapping.removeValue(forKey: page)
     }
     
 }
